@@ -29,7 +29,8 @@ device = torch.device('cuda')
 model_path = 'model/VDJdb'
 model = T5ForConditionalGeneration.from_pretrained(
     model_path, 
-    dtype=torch.float16, # If your device does not support `BF16` precision mode (GPU based on NVIDIA's Ampere and its subsequent architectures), you should comment this line
+    dtype=torch.float16,    # If your device does not support `BF16` precision mode
+                            # (GPU based on NVIDIA's Ampere and its subsequent architectures), you should comment this line.
     local_files_only=True
     ).to(device)
 model.eval()
@@ -42,11 +43,14 @@ sample_kwargs = {
     'temperature': 0.85,
     'num_return_sequences': 128,
 }
-
+beam_kwargs = {
+    'num_beams': 128,
+    'num_return_sequences': 128,
+}
 inputs = "CAI:AAGIGILTV"
 tokenized = tokenizer('# '+" ".join(inputs), return_tensors="pt", ).to(device)
 # outputs = model.generate(**tokenized, **sample_kwargs) # If you want different sequences every generation, uncomment this line. 
-# outputs = model.generate(**tokenized, num_beams=128, num_return_sequences=128) # If you want same sequences every generation (most possible sequence the model think), uncomment this line.
+# outputs = model.generate(**tokenized, **beam_kwargs) # If you want same sequences every generation (most possible sequence the model think), uncomment this line.
 tcr = tokenizer.batch_decode(outputs, skip_special_tokens=True)
 tcr = [i.replace(' ', '') for i in tcr]
 
