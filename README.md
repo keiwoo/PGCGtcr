@@ -17,9 +17,43 @@ There is no feature or function needing specific version of package, you can run
 
 > If your device does not support `BF16` precision mode (GPU based on NVIDIA's Ampere and its subsequent architectures), you should set `bf16=False` which will cost 4x time more than at most.
 
-### 3. Run the model
+### 2. Download the model
+The fine-tuned models are at Hugging Face, you should download and put them in right place. Please follow the instructions in every model file folder.
 
+### 3. Run the model
+```
+from transformers import T5ForConditionalGeneration, T5Tokenizer    
+import torch
+
+torch.cuda.manual_seed_all(42)
+device = torch.device('cuda')
+
+model_path = 'model/VDJdb'
+model = T5ForConditionalGeneration.from_pretrained(
+    model_path, 
+    dtype=torch.float16,
+    local_files_only=True
+    ).to(device)
+model.eval()
+tokenizer = T5Tokenizer.from_pretrained(model_path, local_files_only=True)
+
+sample_kwargs = {
+    'do_sample': True,
+    'top_k': 9,
+    'top_p': 0.93,
+    'temperature': 0.85,
+    'num_return_sequences': 128,
+}
+
+inputs = "CAI:AAGIGILTV"
+tokenized = tokenizer('# '+" ".join(inputs), return_tensors="pt", ).to(device)
+# outputs = model.generate(**tokenized, **sample_kwargs) # If you want different sequences every generation, uncomment this line. 
+# outputs = model.generate(**tokenized, num_beams=128, num_return_sequences=128) # If you want same sequences every generation (most possible sequence the model think), uncomment this line.
+tcr = tokenizer.batch_decode(outputs, skip_special_tokens=True)
+tcr = [i.replace(' ', '') for i in tcr]
+
+```
 
 
 ## Web server
-We also provide a web server for users to test their TCR-peptide pairs without running code. The web server is at [ Web Server](https://fca_icdb.mpu.edu.mo/).
+We also provide a web server for users to test their TCR-peptide pairs without running code. The web server is at [Web Server](https://fca_icdb.mpu.edu.mo/pgcgtcr).
