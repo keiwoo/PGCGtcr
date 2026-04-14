@@ -13,9 +13,7 @@ numpy=2.2.6
 pandas=3.0.1
 cuda=13.0
 ```
-There is no feature or function needing specific version of package, you can run `RoBERTcr.py` in your existing Python environment conveniently. 
-
-> If your device does not support `BF16` precision mode (GPU based on NVIDIA's Ampere and its subsequent architectures), you should set `bf16=False` which will cost 4x time more than at most.
+There is no feature or function needing specific version of package, you can run  in your existing Python environment conveniently. 
 
 ### 2. Download the model
 The fine-tuned models are at Hugging Face, you should download and put them in right place. Please follow the instructions in every model file folder.
@@ -31,7 +29,7 @@ device = torch.device('cuda')
 model_path = 'model/VDJdb'
 model = T5ForConditionalGeneration.from_pretrained(
     model_path, 
-    dtype=torch.float16,
+    dtype=torch.float16, # If your device does not support `BF16` precision mode (GPU based on NVIDIA's Ampere and its subsequent architectures), you should comment this line
     local_files_only=True
     ).to(device)
 model.eval()
