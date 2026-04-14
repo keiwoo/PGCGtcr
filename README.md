@@ -41,19 +41,23 @@ sample_kwargs = {
     'top_k': 9,
     'top_p': 0.93,
     'temperature': 0.85,
-    'num_return_sequences': 128,
+    'num_return_sequences': 16,
 }
 beam_kwargs = {
-    'num_beams': 128,
-    'num_return_sequences': 128,
+    'num_beams': 16,
+    'num_return_sequences': 16,
 }
 inputs = "CAI:AAGIGILTV"
 tokenized = tokenizer('# '+" ".join(inputs), return_tensors="pt", ).to(device)
 # outputs = model.generate(**tokenized, **sample_kwargs) # If you want different sequences every generation, uncomment this line. 
-# outputs = model.generate(**tokenized, **beam_kwargs) # If you want same sequences every generation (most possible sequence the model think), uncomment this line.
+outputs = model.generate(**tokenized, **beam_kwargs) # If you want same sequences every generation (most possible sequence the model think), uncomment this line.
 tcr = tokenizer.batch_decode(outputs, skip_special_tokens=True)
 tcr = [i.replace(' ', '') for i in tcr]
-
+print(tcr)
+['CAISESNFGNEKLTF',
+ 'CAISESGLGQPQHF',
+ 'CAISESGGGADGLTF',
+...]
 ```
 
 
