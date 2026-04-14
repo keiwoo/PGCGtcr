@@ -24,7 +24,7 @@ from transformers import T5ForConditionalGeneration, T5Tokenizer
 import torch
 
 torch.cuda.manual_seed_all(42)
-device = torch.device('cuda')
+device = torch.device('cuda:1')
 
 model_path = 'model/VDJdb'
 model = T5ForConditionalGeneration.from_pretrained(
