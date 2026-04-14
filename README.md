@@ -51,13 +51,11 @@ inputs = "CAI:AAGIGILTV"
 tokenized = tokenizer('# '+" ".join(inputs), return_tensors="pt", ).to(device)
 # outputs = model.generate(**tokenized, **sample_kwargs) # If you want different sequences every generation, uncomment this line. 
 outputs = model.generate(**tokenized, **beam_kwargs) # If you want same sequences every generation (most possible sequence the model think), uncomment this line.
+
 tcr = tokenizer.batch_decode(outputs, skip_special_tokens=True)
 tcr = [i.replace(' ', '') for i in tcr]
 print(tcr)
-['CAISESNFGNEKLTF',
- 'CAISESGLGQPQHF',
- 'CAISESGGGADGLTF',
-...]
+# ['CAISESNFGNEKLTF', 'CAISESGLGQPQHF', 'CAISESGGGADGLTF', ...]
 ```
 
 
