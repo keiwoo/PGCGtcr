@@ -60,4 +60,4 @@ print(tcr)
 
 
 ## Web server
-We also provide a web server for users to test their TCR-peptide pairs without running code. The web server is at [PGCGtcr Web Server](https://fca_icdb.mpu.edu.mo/pgcgtcr).
+We also provide a web server for users to generate their TCR sequences without running code at [PGCGtcr Web Server](https://fca_icdb.mpu.edu.mo/pgcgtcr).
